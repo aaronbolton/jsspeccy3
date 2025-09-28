@@ -23,6 +23,31 @@ These days, releasing open source code tends to come with an unspoken social con
 
 This is a personal project, created for my own enjoyment, and my act of publishing the code does not come with any commitment to provide technical support or assistance. I'm always happy to hear of other people getting similar enjoyment from hacking on the code, and pull requests are welcome, but I can't promise to review them or shepherd them into an "official" release on any sort of timescale. Managing external contributions is often the point at which a "fun" project stops being fun. If there's a feature you need in the project - feel free to fork.
 
+## Docker
+
+JSSpeccy 3 can be run as a Docker container. The container is automatically built and published to GitHub Container Registry when changes are pushed to the repository.
+
+### Running the pre-built container
+
+```bash
+docker run -p 8000:8000 ghcr.io/aaronbolton/jsspeccy3:latest
+```
+
+The emulator will be available at http://localhost:8000
+
+### Building locally
+
+```bash
+docker build -t jsspeccy3 .
+docker run -p 8000:8000 jsspeccy3
+```
+
+### Using Docker Compose
+
+```bash
+docker-compose up
+```
+
 ## Embedding
 
 JSSpeccy 3 is designed with embedding in mind. To include it in your own site, download [a release archive](https://github.com/gasman/jsspeccy3/releases) and copy the contents of the `jsspeccy` folder somewhere web-accessible. Be sure to keep the .js and .wasm files and the subdirectories in the same place relative to jsspeccy.js.
