@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image (Simple)
 
 on:
   push:
@@ -21,8 +21,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write
-      attestations: write
 
     steps:
     - name: Checkout repository
@@ -53,7 +51,6 @@ jobs:
           type=raw,value=latest,enable={{is_default_branch}}
 
     - name: Build and push Docker image
-      id: build
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -64,13 +61,8 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    # Generate build provenance attestation (only for main branch, non-PR builds)
-    # This requires GitHub's attestation service and may not work in all repository configurations
-    - name: Generate artifact attestation
-      if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-      uses: actions/attest-build-provenance@v1
-      continue-on-error: true
-      with:
-        subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-        subject-digest: ${{ steps.build.outputs.digest }}
-        push-to-registry: true
+    - name: Output image details
+      run: |
+        echo "Image pushed successfully!"
+        echo "Tags: ${{ steps.meta.outputs.tags }}"
+        echo "Labels: ${{ steps.meta.outputs.labels }}"
